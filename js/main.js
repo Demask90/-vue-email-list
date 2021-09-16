@@ -7,18 +7,23 @@ Vue.config.devtools = true;
 const app = new Vue ({
     el:"#app",
     data: {
-        Mails: [],
+        contacts: 10,
+        arrayMailTmp:[],
+        arrayMail:[],
     },
-    Mounted() {
-        for (let i = 0; i < 10; i++) {
+    mounted() {
+        for(let i = 0; i < this.contacts; i++){
             axios
                 .get('https://flynn.boolean.careers/exercises/api/random/mail')
-                .then((result) => {
-
-                this.Mails.push(result.data.response);
-             
-            });    
+                .then((result)=>{
+                    let mail = (i + 1) + " - " + result.data.response;
+                    console.log(mail)
+                    this.arrayMailTmp.push(mail);
+                    if(this.arrayMailTmp.length == this.contacts){
+                        this.arrayMail = this.arrayMailTmp
+                    }       
+                })
         }
-    }
 
+    }
 })
